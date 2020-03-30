@@ -3,10 +3,10 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const savedLists = localStorage.getItem('trello-lists')// ★①追加
+const savedLists = localStorage.getItem('trello-lists')
 
 
-const store = new Vuex.Store({// ★②編集
+const store = new Vuex.Store({
  state: {
   lists: savedLists ? JSON.parse(savedLists): [
       {
@@ -27,7 +27,6 @@ const store = new Vuex.Store({// ★②編集
         cards: []
       }
     ],
-   // ★ここまで③編集
   },
   mutations: {
     addlist(state, payload) {
@@ -38,6 +37,9 @@ const store = new Vuex.Store({// ★②編集
     },
     addCardToList(state, payload) {
       state.lists[payload.listIndex].cards.push({ body: payload.body })
+    },
+    removeCardFromList(state, payload) {
+      state.lists[payload.listIndex].cards.splice(payload.cardIndex, 1)
     },
   },
   actions: {
@@ -50,9 +52,17 @@ const store = new Vuex.Store({// ★②編集
     addCardToList(context, payload) {
       context.commit('addCardToList', payload)
     },
+    removeCardFromList(context, payload) {
+      context.commit('removeCardFromList', payload)
+    },
   },
   getters: {
-  }
+    totalCardCount(state) {
+      let count = 0
+      state.lists.map(content => count += content.cards.length)
+      return count
+    },
+  },
 })
 
 // ★ここから追記
