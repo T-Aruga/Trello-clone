@@ -4,10 +4,13 @@
       <p class="list-title">{{ title }}</p>
       <div class="deletelist" @click="removeList">×</div>
     </div>
+    <card-add :listIndex="listIndex" />
   </div>
 </template>
 
 <script>
+import CardAdd from './CardAdd.vue'
+
   export default {
     props: {
       title: {
@@ -25,6 +28,9 @@
           this.$store.dispatch('removelist', { listIndex: this.listIndex })
         }
       },
+    },
+    components: {
+      CardAdd,
     }
   }
 </script>
