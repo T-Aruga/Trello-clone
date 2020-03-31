@@ -5,17 +5,22 @@
       <p class="list-counter">total: {{ totalCardInList }}</p>
       <div class="deletelist" @click="removeList">×</div>
     </div>
-    <card v-for="(item, index) in cards"
+    <draggable group="cards"
+           :list="cards"
+           @end="$emit('change')">
+      <card v-for="(item, index) in cards"
           :body="item.body"
           :key="item.id"
           :cardIndex="index"
           :listIndex="listIndex"
-    />
-    <card-add :listIndex="listIndex"/>
+      />
+      <card-add :listIndex="listIndex"/>
+    </draggable>
   </div>
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import CardAdd from './CardAdd.vue'
 import Card from './Card'
 
@@ -48,7 +53,8 @@ import Card from './Card'
     },
     components: {
       CardAdd,
-      Card
+      Card,
+      draggable,
     }
   }
 </script>
